@@ -6,10 +6,18 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
 
+    public AudioClip audioClipEPIC;
+    private AudioSource audioSource;
+    public BoxCollider2D boxCollider2D;
     public Rigidbody2D rigidbody2d;
     public Animator animator;
 
     Vector2 movement;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     void Update()
     {
@@ -32,5 +40,15 @@ public class PlayerMovement : MonoBehaviour
     {
         // Movement
         rigidbody2d.MovePosition(rigidbody2d.position + movement * moveSpeed * Time.fixedDeltaTime);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.collider.gameObject.name == "Gift")
+        {
+            audioSource.PlayOneShot(audioClipEPIC);
+            rigidbody2d.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+
     }
 }
